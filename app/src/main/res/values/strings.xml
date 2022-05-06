@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">sqlite</string>
+    <string-array name="todo_category">
+        <item>Renting house</item>
+        <item>Studying</item>
+        <item>Eating</item>
+        <item>Shopping</item>
+    </string-array>
+    <string name="title_activity_bottom">Bottom</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+</resources>
