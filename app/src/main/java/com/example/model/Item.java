@@ -10,6 +10,13 @@ public class Item implements Serializable {
     public Item() {
     }
 
+    public Item(String category, String title, String date, double price) {
+        this.category = category;
+        this.title = title;
+        this.date = date;
+        this.price = price;
+    }
+
     public Item(int id, String category, String title, String date, double price) {
         this.id = id;
         this.category = category;

@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,13 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.R;
-import com.example.UpdateItemActivity;
+import com.example.CreateItemActivity;
 import com.example.adapter.ListAdapter;
 import com.example.db.SQLiteHelper;
 import com.example.model.Item;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class FrHistory extends Fragment implements ListAdapter.ItemListener {
@@ -44,11 +39,7 @@ public class FrHistory extends Fragment implements ListAdapter.ItemListener {
         listAdapter = new ListAdapter();
         sqLiteHelper = new SQLiteHelper(getContext());
 
-        List<Item> items = sqLiteHelper.getAllItems();
-        Date d = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        sqLiteHelper.createItem(new Item(1, "title", "cate", dateFormat.format(d), 12323));
-        listAdapter.setItems(items);
+        getItems();
 
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
@@ -59,15 +50,19 @@ public class FrHistory extends Fragment implements ListAdapter.ItemListener {
     @Override
     public void onItemClick(View view, int position) {
         Item item = listAdapter.getItems().get(position);
-        Intent t = new Intent(getActivity(), UpdateItemActivity.class);
+        Intent t = new Intent(getActivity(), CreateItemActivity.class);
         t.putExtra("item", item);
         startActivity(t);
+    }
+
+    private void getItems() {
+        List<Item> items = sqLiteHelper.getAllItems();
+        listAdapter.setItems(items);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        List<Item> items = sqLiteHelper.getAllItems();
-        listAdapter.setItems(items);
+        getItems();
     }
 }

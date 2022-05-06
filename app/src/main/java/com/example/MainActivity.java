@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.adapter.ViewPagerAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -26,6 +28,13 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.main_bottom_nav);
         viewPager = findViewById(R.id.main_viewpager);
         floatingActionButton = findViewById(R.id.main_floating);
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onOpenCreateItem();
+            }
+        });
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         viewPager.setAdapter(viewPagerAdapter);
@@ -73,5 +82,10 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    private void onOpenCreateItem() {
+        Intent i = new Intent(MainActivity.this, CreateItemActivity.class);
+        startActivity(i);
     }
 }

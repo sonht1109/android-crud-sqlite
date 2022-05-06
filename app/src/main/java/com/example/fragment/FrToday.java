@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.R;
-import com.example.UpdateItemActivity;
+import com.example.CreateItemActivity;
 import com.example.adapter.ListAdapter;
 import com.example.db.SQLiteHelper;
 import com.example.model.Item;
@@ -76,7 +76,7 @@ public class FrToday extends Fragment implements ListAdapter.ItemListener {
     @Override
     public void onItemClick(View view, int position) {
         Item i = adapter.getItems().get(position);
-        Intent t = new Intent(getActivity(), UpdateItemActivity.class);
+        Intent t = new Intent(getActivity(), CreateItemActivity.class);
         t.putExtra("item", i);
         startActivity(t);
     }
