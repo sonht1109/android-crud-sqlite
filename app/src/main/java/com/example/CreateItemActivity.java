@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.db.SQLiteHelper;
 import com.example.model.Item;
@@ -26,6 +27,7 @@ public class CreateItemActivity extends AppCompatActivity {
     private Button btnDate, btnAdd, btnCancel, btnDelete;
     private SQLiteHelper sql;
     private Item item;
+    private TextView tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,7 @@ public class CreateItemActivity extends AppCompatActivity {
         btnAdd = findViewById(R.id.btn_add);
         btnCancel = findViewById(R.id.btn_cancel);
         btnDelete = findViewById(R.id.btn_delete);
+        tv = findViewById(R.id.add_tv_title);
 
         sql = new SQLiteHelper(this);
 
@@ -78,9 +81,13 @@ public class CreateItemActivity extends AppCompatActivity {
         item = (Item) intent.getSerializableExtra("item");
         if (item == null) {
             btnDelete.setVisibility(View.GONE);
-            btnAdd.setText("Update");
+            btnAdd.setText("Add");
+            tv.setText("Add a new item");
         } else {
             setItemIntoForm();
+            btnDelete.setVisibility(View.VISIBLE);
+            btnAdd.setText("Update");
+            tv.setText("Update item");
         }
     }
 
