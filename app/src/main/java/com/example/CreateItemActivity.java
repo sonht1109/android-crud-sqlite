@@ -1,5 +1,6 @@
 package com.example;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
@@ -119,6 +120,7 @@ public class CreateItemActivity extends AppCompatActivity {
         finish();
     }
 
+    @Nullable
     private Item getItemFromForm() {
         try {
             String title = eTitle.getText().toString();

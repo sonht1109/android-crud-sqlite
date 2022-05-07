@@ -23,6 +23,7 @@
         android:padding="20dp">
 
         <Button
+            android:id="@+id/stat_btn_from"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -31,6 +32,7 @@
             android:text="From" />
 
         <Button
+            android:id="@+id/stat_btn_to"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -52,6 +54,7 @@
             android:layout_height="wrap_content" />
 
         <Button
+            android:id="@+id/stat_btn_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -59,7 +62,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/today_rcv"
+        android:id="@+id/stat_rcv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp" />

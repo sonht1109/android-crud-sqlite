@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -42,10 +43,30 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     }
 
     public List<Item> getAllItems() {
+        return getItems(null, null);
+    }
+
+    public List<Item> searchItems(String[] args) {
         List<Item> items = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
-        String orderBy = "date DESC";
-        Cursor cursor = sqLiteDatabase.query("items", null, null, null, null, null, orderBy);
+        Cursor cursor = sqLiteDatabase.rawQuery("select * from items where title like ? " +
+                "and category like ? and date between ? and ? order by ?", args);
+        while (cursor != null && cursor.moveToNext()) {
+            int id = cursor.getInt(0);
+            String title = cursor.getString(1);
+            String category = cursor.getString(2);
+            double price = cursor.getDouble(3);
+            String date = cursor.getString(4);
+            items.add(new Item(id, title, category, date, price));
+        }
+        Log.i("Items" + args.length, args.toString());
+        return items;
+    }
+
+    public List<Item> getItems(String clause, String[] args) {
+        List<Item> items = new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.query("items", null, clause, args, null, null, "date desc");
         while (cursor != null && cursor.moveToNext()) {
             int id = cursor.getInt(0);
             String title = cursor.getString(1);
@@ -67,24 +88,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return sqLiteDatabase.insert("items", null, values);
     }
 
-    public List<Item> getItemsByDate(String arg) {
-        List<Item> items = new ArrayList<>();
-        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
-
-        String clause = "date like ?";
-        String[] args = {arg};
-        String orderBy = "date DESC";
-
-        Cursor cursor = sqLiteDatabase.query("items", null, clause, args, null, null, orderBy);
-        while (cursor != null && cursor.moveToNext()) {
-            int id = cursor.getInt(0);
-            String title = cursor.getString(1);
-            String category = cursor.getString(2);
-            double price = cursor.getDouble(3);
-            String date = cursor.getString(4);
-            items.add(new Item(id, title, category, date, price));
-        }
-        return items;
+    public List<Item> getItemsByDate(String date) {
+        String[] args = {date};
+        return getItems("date like ?", args);
     }
 
     public int updateItem(Item item) {
