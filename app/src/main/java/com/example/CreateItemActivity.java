@@ -32,6 +32,8 @@ public class CreateItemActivity extends AppCompatActivity {
     private TextView tv;
     private SpinnerImageAdapter imageAdapter;
     public static final int[] IMAGES = {R.drawable.ca1, R.drawable.ca2, R.drawable.ca3};
+    private final Calendar c = Calendar.getInstance();
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,9 @@ public class CreateItemActivity extends AppCompatActivity {
 
         imageAdapter = new SpinnerImageAdapter(IMAGES);
         spImage.setAdapter(imageAdapter);
+
+        String today = dateFormat.format(c.getTime());
+        btnDate.setText(today);
 
         sql = new SQLiteHelper(this);
 
@@ -100,11 +105,9 @@ public class CreateItemActivity extends AppCompatActivity {
     }
 
     private void onOpenDateDialog() {
-        final Calendar c = Calendar.getInstance();
         int currentDay = c.get(Calendar.DAY_OF_MONTH);
         int currentMonth = c.get(Calendar.MONTH);
         int currentYear = c.get(Calendar.YEAR);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         DatePickerDialog dateDialog = new DatePickerDialog(this, (view, year, month, day) -> {
             c.set(year, month, day);
             btnDate.setText(dateFormat.format(c.getTime()));
@@ -142,7 +145,7 @@ public class CreateItemActivity extends AppCompatActivity {
             String date = btnDate.getText().toString();
             String cate = sp.getSelectedItem().toString();
             int img = Integer.parseInt(spImage.getSelectedItem().toString());
-            return new Item(title, cate, date, Double.parseDouble(price), img);
+            return new Item(cate, title, date, Double.parseDouble(price), img);
         } catch (Exception e) {
             return null;
         }

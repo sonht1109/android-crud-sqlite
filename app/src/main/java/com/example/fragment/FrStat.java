@@ -36,6 +36,8 @@ public class FrStat extends Fragment {
     private RecyclerView rcv;
     private SQLiteHelper sqLiteHelper;
     private ListAdapter adapter;
+    private final Calendar c = Calendar.getInstance();
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     @Nullable
     @Override
@@ -64,6 +66,10 @@ public class FrStat extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         rcv.setLayoutManager(manager);
         rcv.setAdapter(adapter);
+
+        String today = dateFormat.format(c.getTime());
+        btnFrom.setText(today);
+        btnTo.setText(today);
 
         btnFrom.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,14 +102,16 @@ public class FrStat extends Fragment {
             }
         });
 
+        String[] args = {"date desc"};
+        String sql = "select * from items order by ?";
+        List<Item> items = sqLiteHelper.searchItems(sql, args);
+        adapter.setItems(items);
     }
 
     private void onOpenFromPicker() {
-        final Calendar c = Calendar.getInstance();
         int currentDay = c.get(Calendar.DAY_OF_MONTH);
         int currentMonth = c.get(Calendar.MONTH);
         int currentYear = c.get(Calendar.YEAR);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         DatePickerDialog dateDialog = new DatePickerDialog(getContext(), (view, year, month, day) -> {
             c.set(year, month, day);
             btnFrom.setText(dateFormat.format(c.getTime()));
@@ -112,11 +120,9 @@ public class FrStat extends Fragment {
     }
 
     private void onOpenToPicker() {
-        final Calendar c = Calendar.getInstance();
         int currentDay = c.get(Calendar.DAY_OF_MONTH);
         int currentMonth = c.get(Calendar.MONTH);
         int currentYear = c.get(Calendar.YEAR);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         DatePickerDialog dateDialog = new DatePickerDialog(getContext(), (view, year, month, day) -> {
             c.set(year, month, day);
             btnTo.setText(dateFormat.format(c.getTime()));
@@ -131,8 +137,9 @@ public class FrStat extends Fragment {
         String cate = sp.getSelectedItem().toString();
 
         String[] args = {"%" + title + "%", cate, from, to, "date desc"};
+        String sql = "select * from items where title like ? and category like ? and date between ? and ? order by ?";
 
-        List<Item> items = sqLiteHelper.searchItems(args);
+        List<Item> items = sqLiteHelper.searchItems(sql, args);
         adapter.setItems(items);
     }
 

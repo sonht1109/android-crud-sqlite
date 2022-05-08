@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import com.example.model.Item;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SQLiteHelper extends SQLiteOpenHelper {
@@ -45,21 +46,25 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return getItems(null, null);
     }
 
-    public List<Item> searchItems(String[] args) {
+    public List<Item> searchItems(String sql, String[] args) {
+        Log.i("SEARCH", Arrays.toString(args));
         List<Item> items = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = getReadableDatabase();
-        Cursor cursor = sqLiteDatabase.rawQuery("select * from items where title like ? " +
-                "and category like ? and date between ? and ? order by ?", args);
-        while (cursor != null && cursor.moveToNext()) {
-            int id = cursor.getInt(0);
-            String title = cursor.getString(1);
-            String category = cursor.getString(2);
-            double price = cursor.getDouble(3);
-            String date = cursor.getString(4);
-            int img = cursor.getInt(5);
-            items.add(new Item(id, title, category, date, price, img));
+        Cursor cursor = sqLiteDatabase.rawQuery(sql, args);
+            Log.i("CURSOR COUNT", "" + cursor.getCount());
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                int id = cursor.getInt(0);
+                String title = cursor.getString(1);
+                String category = cursor.getString(2);
+                double price = cursor.getDouble(3);
+                String date = cursor.getString(4);
+                int img = cursor.getInt(5);
+                items.add(new Item(id, category, title, date, price, img));
+                cursor.moveToNext();
+            }
         }
-        Log.i("Items" + args.length, args.toString());
         return items;
     }
 
@@ -74,7 +79,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             double price = cursor.getDouble(3);
             String date = cursor.getString(4);
             int img = cursor.getInt(5);
-            items.add(new Item(id, title, category, date, price, img));
+            items.add(new Item(id, category, title, date, price, img));
         }
         return items;
     }
