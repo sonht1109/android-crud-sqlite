@@ -28,6 +28,12 @@
         android:orientation="vertical"
         android:padding="20dp">
 
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/add_spinner_image"
+            />
+
         <EditText
             android:id="@+id/add_e_title"
             android:layout_width="match_parent"

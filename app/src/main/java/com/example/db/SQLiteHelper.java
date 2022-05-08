@@ -16,7 +16,7 @@ import java.util.List;
 
 public class SQLiteHelper extends SQLiteOpenHelper {
 
-    private static final String DB_NAME = "spend.db";
+    private static final String DB_NAME = "spend3.db";
     private static int DB_VERSION = 1;
 
     public SQLiteHelper(@Nullable Context context) {
@@ -28,13 +28,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         String sql = "create table items" +
                 "(id integer primary key autoincrement," +
                 "title text," +
-                "category text, price real, date text)";
+                "category text, price real, date text, image integer)";
         db.execSQL(sql);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
     }
 
     @Override
@@ -57,7 +56,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             String category = cursor.getString(2);
             double price = cursor.getDouble(3);
             String date = cursor.getString(4);
-            items.add(new Item(id, title, category, date, price));
+            int img = cursor.getInt(5);
+            items.add(new Item(id, title, category, date, price, img));
         }
         Log.i("Items" + args.length, args.toString());
         return items;
@@ -73,7 +73,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             String category = cursor.getString(2);
             double price = cursor.getDouble(3);
             String date = cursor.getString(4);
-            items.add(new Item(id, title, category, date, price));
+            int img = cursor.getInt(5);
+            items.add(new Item(id, title, category, date, price, img));
         }
         return items;
     }
@@ -84,6 +85,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put("category", item.getCategory());
         values.put("price", item.getPrice());
         values.put("date", item.getDate());
+        values.put("image", item.getImg());
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         return sqLiteDatabase.insert("items", null, values);
     }
@@ -99,6 +101,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put("category", item.getCategory());
         values.put("price", item.getPrice());
         values.put("date", item.getDate());
+        values.put("image", item.getImg());
+
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
 
         String clause = "id=?";

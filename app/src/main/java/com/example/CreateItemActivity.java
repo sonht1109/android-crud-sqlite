@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.adapter.SpinnerImageAdapter;
 import com.example.db.SQLiteHelper;
 import com.example.model.Item;
 
@@ -22,12 +24,14 @@ import java.util.Date;
 
 public class CreateItemActivity extends AppCompatActivity {
 
-    private Spinner sp;
+    private Spinner sp, spImage;
     private EditText eTitle, ePrice;
     private Button btnDate, btnAdd, btnCancel, btnDelete;
     private SQLiteHelper sql;
     private Item item;
     private TextView tv;
+    private SpinnerImageAdapter imageAdapter;
+    public static final int[] IMAGES = {R.drawable.ca1, R.drawable.ca2, R.drawable.ca3};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,10 @@ public class CreateItemActivity extends AppCompatActivity {
         btnCancel = findViewById(R.id.btn_cancel);
         btnDelete = findViewById(R.id.btn_delete);
         tv = findViewById(R.id.add_tv_title);
+        spImage = findViewById(R.id.add_spinner_image);
+
+        imageAdapter = new SpinnerImageAdapter(IMAGES);
+        spImage.setAdapter(imageAdapter);
 
         sql = new SQLiteHelper(this);
 
@@ -107,11 +115,10 @@ public class CreateItemActivity extends AppCompatActivity {
     private void onAdd() {
         Item i = getItemFromForm();
         if (i != null) {
-            if(item != null) {
+            if (item != null) {
                 i.setId(item.getId());
                 sql.updateItem(i);
-            }
-            else {
+            } else {
                 sql.createItem(i);
             }
             finish();
@@ -134,7 +141,8 @@ public class CreateItemActivity extends AppCompatActivity {
             String price = ePrice.getText().toString();
             String date = btnDate.getText().toString();
             String cate = sp.getSelectedItem().toString();
-            return new Item(title, cate, date, Double.parseDouble(price));
+            int img = Integer.parseInt(spImage.getSelectedItem().toString());
+            return new Item(title, cate, date, Double.parseDouble(price), img);
         } catch (Exception e) {
             return null;
         }
@@ -147,6 +155,13 @@ public class CreateItemActivity extends AppCompatActivity {
         for (int i = 0; i < sp.getCount(); i++) {
             if (item.getCategory().equals(sp.getItemAtPosition(i))) {
                 sp.setSelection(i);
+                break;
+            }
+        }
+
+        for (int j = 0; j < IMAGES.length; j++) {
+            if (item.getImg() == IMAGES[j]) {
+                spImage.setSelection(j);
                 break;
             }
         }

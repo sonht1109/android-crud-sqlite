@@ -3,26 +3,36 @@ package com.example.model;
 import java.io.Serializable;
 
 public class Item implements Serializable {
-    private int id;
+    private int id, img;
     private String category, title, date;
     private double price;
 
     public Item() {
     }
 
-    public Item(String category, String title, String date, double price) {
+    public Item(String category, String title, String date, double price, int img) {
         this.category = category;
         this.title = title;
         this.date = date;
         this.price = price;
+        this.img = img;
     }
 
-    public Item(int id, String category, String title, String date, double price) {
+    public int getImg() {
+        return img;
+    }
+
+    public void setImg(int img) {
+        this.img = img;
+    }
+
+    public Item(int id, String category, String title, String date, double price, int img) {
         this.id = id;
         this.category = category;
         this.title = title;
         this.date = date;
         this.price = price;
+        this.img = img;
     }
 
     public int getId() {

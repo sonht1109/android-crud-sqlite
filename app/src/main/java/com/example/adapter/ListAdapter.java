@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.R;
 import com.example.model.Item;
+import com.example.CreateItemActivity;
 
 import java.util.List;
 
@@ -51,6 +53,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ItemViewHolder
         holder.tvCategory.setText(item.getCategory());
         holder.tvDate.setText(item.getDate());
         holder.tvPrice.setText(String.valueOf(item.getPrice()));
+        holder.imgView.setImageResource(CreateItemActivity.IMAGES[item.getImg()]);
     }
 
     @Override
@@ -61,6 +64,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ItemViewHolder
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         private TextView tvTitle, tvCategory, tvDate, tvPrice;
+        private ImageView imgView;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -68,6 +72,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ItemViewHolder
             tvCategory = itemView.findViewById(R.id.item_view_category);
             tvDate = itemView.findViewById(R.id.item_view_date);
             tvPrice = itemView.findViewById(R.id.item_view_price);
+            imgView = itemView.findViewById(R.id.item_view_img);
             itemView.setOnClickListener(v -> {
                 if (itemView != null) {
                     itemListener.onItemClick(itemView, getAdapterPosition());
